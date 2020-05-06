@@ -9,7 +9,7 @@ class lesson:
     class_id = ""
     class_name = ""
 
-def getClass(username, password):
+def getInfo(username, password):
     if password == "admin":
         return {"name": username, "type": "admin", "username": username}
 
@@ -43,12 +43,12 @@ def getClass(username, password):
     for table in tables:
         class_id = table.a.get_text()
         class_name = table.td.next_sibling.next_sibling.next_sibling.next_sibling.get_text()
-        class_dict = {"classID":class_id, "className":class_name}
+        class_dict = {"groupID":class_id, "groupName":class_name,  "type": "class"}
         classes.append(class_dict)
         #for l in lessons:
             #print(l.class_id, l.class_name)
     
-    data_dict = {"name":name, "academy":academy, "classes":classes, "username":username, "type": "student"}
+    data_dict = {"name":name, "academy":academy, "groups":classes, "username":username, "type": "student"}
     return data_dict
 
 
