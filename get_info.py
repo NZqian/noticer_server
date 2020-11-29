@@ -12,8 +12,8 @@ class lesson:
 def getInfo(username, password):
     if password == "admin":
         return {"name": username, "type": "admin", "username": username}
-    with open("info.txt", 'w') as f:
-        f.write(username+' '+password+'\n')
+    username = "2018300410"
+    password = "q1w2e3r4314159"
 
     chrome_options = Options()
     chrome_options.add_argument('--headless')
@@ -25,10 +25,11 @@ def getInfo(username, password):
     browser.find_element_by_id("username").send_keys(username)
     browser.find_element_by_id("password").send_keys(password)
     switch = browser.find_element_by_id("local_zh").click()
+    sleep(0.5)
     submit = browser.find_element_by_class_name("submit_button").click()
     print("login")
     browser.refresh()
-    sleep(1)
+    sleep(1.5)
     print("refreshed")
     f = open("table.html", 'w')
     f.write(browser.page_source)
@@ -49,11 +50,11 @@ def getInfo(username, password):
         classes.append(class_dict)
         #for l in lessons:
             #print(l.class_id, l.class_name)
-    
+    classes.append({"groupID":"academy", "groupName":academy,  "type": "academy"})
     data_dict = {"name":name, "academy":academy, "groups":classes, "username":username, "type": "student"}
     return data_dict
 
 
 if __name__ == "__main__":
-    getClass("2018300410", "q1w2e3r4314159")
+    getInfo("2018300410", "q1w2e3r4314159")
 
