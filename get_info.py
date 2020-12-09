@@ -11,7 +11,7 @@ class lesson:
 
 def getInfo(username, password):
     if password == "admin":
-        return {"name": username, "type": "admin", "username": username}
+        return {"name": username, "type": "admin", "username": username, "academy": "admin"}
     username = "2018300410"
     password = "q1w2e3r4314159"
 
@@ -52,6 +52,7 @@ def getInfo(username, password):
             #print(l.class_id, l.class_name)
     classes.append({"groupID":"academy", "groupName":academy,  "type": "academy"})
     data_dict = {"name":name, "academy":academy, "groups":classes, "username":username, "type": "student"}
+    #data_dict = {"name":"teststudent", "academy":academy, "groups":classes, "username":"2018000000", "type": "student"}
     return data_dict
 
 
