@@ -39,6 +39,35 @@ def add_admin_into_group():
         db.insert_group_user(group_no, user_no)
         return "OK"
 
+@app.route('/query_user_group/', methods=['GET', 'POST'])
+def query_user_group():
+    if request.method == 'POST':
+        data = request.get_data()
+        print(str(data, encoding='utf-8'))
+        json_data = json.loads(data.decode('utf-8'))
+        user_no = json_data.get("user_no")
+        groups = db.query_user_group( user_no)
+        
+        print(groups)
+        return json.dumps(groups)
+
+@app.route('/insert_notice/', methods=['GET', 'POST'])
+def insert_notice():
+    if request.method == 'POST':
+        data = request.get_data()
+        print(str(data, encoding='utf-8'))
+        json_data = json.loads(data.decode('utf-8'))
+        notice_no = json_data.get("notice_no")
+        user_no = json_data.get("user_no")
+        notice_title = json_data.get("notice_title")
+        notice_content = json_data.get("notice_content")
+        notice_date = json_data.get("notice_date")
+        notice_time = json_data.get("notice_time")
+        notice_groupID = json_data.get("notice_groupID")
+
+        db.insert_notice(notice_title, notice_content, notice_date, notice_time, notice_groupID)
+        return "OK"
+
 @app.route('/notice_receive/', methods=['GET', 'POST'])
 def notice_recieve():
     if request.method == 'POST':
@@ -49,6 +78,18 @@ def notice_recieve():
         user_no = json_data.get("user_no")
         db.update_notice_recieve(notice_no, user_no)
         return "OK"
+    
+@app.route('/notice_all_user/', methods=['GET', 'POST'])
+def notice_all_user():
+    if request.method == 'POST':
+        data = request.get_data()
+        print(str(data, encoding='utf-8'))
+        json_data = json.loads(data.decode('utf-8'))
+        notice_no = json_data.get("notice_no")
+        status = db.query_notice_all_user(notice_no)
+        
+        print(status)
+        return json.dumps(status)
 
 @app.route('/notice_single_user/', methods=['GET', 'POST'])
 def notice_detail_user():

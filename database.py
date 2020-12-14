@@ -15,7 +15,7 @@ print(type(conn))
 
 class DataBase:
 
-    def __init__(self, host="139.9.119.34", user="s2018300410", password="GaussDB@123", database="noticer"):
+    def __init__(self, host="139.9.119.34", user="s2018300410", password="GaussDB@123", database="s2018300410"):
         self.conn = pymysql.connect(host, user, password, database)
         self.cursor = self.conn.cursor()
 
@@ -29,6 +29,7 @@ class DataBase:
         print(res)
         if res == 2:
             user_info = get_info.getInfo(username, password)
+            print(user_info)
             self.insert_user(user_info['username'], user_info['academy'], user_info['type'], user_info['name'], password)
             if user_info['type'] != "admin":
                 for group in user_info['groups']:
@@ -41,6 +42,21 @@ class DataBase:
         groups = self.query_user_group(username) # try to query user group
         userinfo = self.query_user_info(username)
         return {"userinfo": userinfo, "groups": groups}
+
+    def insert_notice(self, ntitle, ncontent, ndate, ntime, gno):
+        new_time = ndate + " " + ntime
+        print(ntitle)
+        print(ncontent)
+        print(new_time)
+        print(gno)
+        #sql = "insert into noticeinfo(ntitle, ncontent, ntime, gno) \
+        #        values('%s', '%s', '%s', '%s')" % (ntitle, ncontent, ndate+" "+ntime, gno)
+        #sql = "insert into noticeinfo(ntitle, ncontent, ntime, gno) \
+        #        values('asdf', 'sadfasdfas', '2020-4-1 12:00', 'academy');"
+        sql = "insert into noticeinfo(ntitle, ncontent, ntime, gno) \
+                values('%s', '%s', '%s', '%s');" % (ntitle, ncontent, new_time, gno)
+        self.cursor.execute(sql)
+        self.conn.commit()
 
     def update_notice_recieve(self, nno, uno):
         print(nno, uno)
@@ -64,6 +80,17 @@ class DataBase:
         notice['time'] = notice['time'].strftime('%H-%M-%S')
         notice['notice_no'] = nno
         return notice
+
+    def query_notice_all_user(self, nno):
+        values = ['name', 'received']
+        sql = "select uname, received from noticeuser, user \
+                where noticeuser.uno = user.uno and noticeuser.nno = '%s'" \
+                % (nno)
+        self.cursor.execute(sql)
+        statuses = self.cursor.fetchall()
+        statuses = [dict(zip(values, status)) for status in statuses]
+        print(statuses)
+        return statuses
     
     def query_user_info(self, username):
         values = ['username', 'academy', 'type', 'name']
